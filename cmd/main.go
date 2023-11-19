@@ -54,4 +54,5 @@ func main() {
 	if err := app.listenAndServer(); err != nil {
 		panic(err)
 	}
+	fmt.Println("test1")
 }
