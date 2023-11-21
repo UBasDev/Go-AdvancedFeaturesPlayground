@@ -81,3 +81,11 @@ func NewCustomerEntity(firstname string, lastname string, email string, age uint
 		Gender:    gender,
 	}, nil
 }
+func MigrateCustomerEntity(dbContext *gorm.DB) {
+	if !dbContext.Migrator().HasTable(&Customer{}) {
+		err := dbContext.AutoMigrate(&Customer{})
+		if err != nil {
+			panic(err)
+		}
+	}
+}
