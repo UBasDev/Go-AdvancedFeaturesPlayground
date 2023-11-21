@@ -7,14 +7,15 @@ import (
 	"time"
 
 	initializers "example.com/goproject9/init/init_database"
-	"example.com/goproject9/migrations"
+
 	"gorm.io/gorm"
 )
 
 type application struct {
 	appName           string
 	server            server
-	debug             bool
+	isDebugActive     bool
+	isProfilersActive bool
 	errLog            *log.Logger
 	infoLog           *log.Logger
 	serverReadTimeOut time.Duration
@@ -33,7 +34,7 @@ func init() {
 	//dsn := `host=localhost user=postgres password=admin dbname=go1 port=5432 sslmode=disable`
 	dbUrl := "postgres://postgres:admin@localhost:5432/go1?sslmode=disable"
 	dBContext = initializers.InitializeDbConnection(dbUrl)
-	migrations.MigrateEntities(dBContext)
+	//go entities.MigrateCustomerEntity(dBContext)
 }
 
 func main() {
@@ -45,7 +46,8 @@ func main() {
 	app := &application{
 		appName:           "goproject9",
 		server:            server,
-		debug:             true,
+		isDebugActive:     true,
+		isProfilersActive: true,
 		infoLog:           log.New(os.Stdout, "INFO\t", log.Ltime|log.Ldate|log.Lshortfile),
 		errLog:            log.New(os.Stdout, "ERROR\t", log.Ltime|log.Ldate|log.Lshortfile),
 		serverReadTimeOut: time.Duration(300) * time.Second,

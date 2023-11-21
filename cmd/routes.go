@@ -11,7 +11,7 @@ import (
 func (app *application) routes() http.Handler {
 	router := http.NewServeMux()
 
-	if app.debug { //PPROF PROFILERS
+	if app.isProfilersActive { //PPROF PROFILERS
 		router.Handle("/debug/pprof/", http.HandlerFunc(pprof.Index))
 		router.Handle("/debug/pprof/cmdline", http.HandlerFunc(pprof.Cmdline))
 		router.Handle("/debug/pprof/profile", http.HandlerFunc(pprof.Profile))
