@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	customer_entity "example.com/goproject9/entities/customer"
 	initializers "example.com/goproject9/init/init_database"
 
 	"gorm.io/gorm"
@@ -34,7 +35,7 @@ func init() {
 	//dsn := `host=localhost user=postgres password=admin dbname=go1 port=5432 sslmode=disable`
 	dbUrl := "postgres://postgres:admin@localhost:5432/go1?sslmode=disable"
 	dBContext = initializers.InitializeDbConnection(dbUrl)
-	//go entities.MigrateCustomerEntity(dBContext)
+	go customer_entity.MigrateCustomerEntity(dBContext)
 }
 
 func main() {
