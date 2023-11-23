@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	customer_entity "example.com/goproject9/entities/customer"
-	initializers "example.com/goproject9/init/init_database"
+	initializers "example.com/goproject9/initialize/database"
+	"example.com/goproject9/migrations"
 
 	"gorm.io/gorm"
 )
@@ -35,7 +35,8 @@ func init() {
 	//dsn := `host=localhost user=postgres password=admin dbname=go1 port=5432 sslmode=disable`
 	dbUrl := "postgres://postgres:admin@localhost:5432/go1?sslmode=disable"
 	dBContext = initializers.InitializeDbConnection(dbUrl)
-	go customer_entity.MigrateCustomerEntity(dBContext)
+	migrations := migrations.NewMigrationsPackage()
+	go migrations.MigrateAllEntities(dBContext)
 }
 
 func main() {
@@ -49,8 +50,8 @@ func main() {
 		server:            server,
 		isDebugActive:     true,
 		isProfilersActive: true,
-		infoLog:           log.New(os.Stdout, "INFO\t", log.Ltime|log.Ldate|log.Lshortfile),
-		errLog:            log.New(os.Stdout, "ERROR\t", log.Ltime|log.Ldate|log.Lshortfile),
+		infoLog:           log.New(os.Stdout, "INFO\t", log.LstdFlags),
+		errLog:            log.New(os.Stdout, "ERROR\t", log.LstdFlags),
 		serverReadTimeOut: time.Duration(300) * time.Second,
 		dbContext:         dBContext,
 	}
