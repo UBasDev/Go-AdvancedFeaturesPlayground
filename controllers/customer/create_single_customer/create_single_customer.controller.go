@@ -26,5 +26,6 @@ func NewCreateSingleCustomerController(appName string, dbContext *gorm.DB) INewC
 func (model NewCreateSingleCustomerControllerModel) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	if rq.Method == http.MethodPost {
 		services.CreateSingleCustomer(rw, rq, model.dbContext)
+		return
 	}
 }
