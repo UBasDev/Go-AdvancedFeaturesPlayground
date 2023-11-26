@@ -32,7 +32,9 @@ type ScreenEntity struct {
 	Description string    `gorm:"type:string;size:100;column:description1"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	DeletedAt   gorm.DeletedAt    `gorm:"index"`
+	Customers1  []*CustomerEntity `gorm:"many2many:customers1_screens1;foreignKey:Id;joinForeignKey:ScreenId1;References:Id;joinReferences:CustomerId1"`
+	Roles1      []*RoleEntity     `gorm:"many2many:screens1_roles1;foreignKey:Id;joinForeignKey:ScreenId1;References:Id;joinReferences:RoleId1"`
 }
 
 type CustomerEntity struct {
@@ -47,9 +49,9 @@ type CustomerEntity struct {
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 	DeletedAt      gorm.DeletedAt  `gorm:"index"`
-	RoleId1        uuid.UUID       `gorm:"type:uuid"`
+	RoleId1        *uuid.UUID      `gorm:"type:uuid"`
 	Screens1       []*ScreenEntity `gorm:"many2many:customers1_screens1;foreignKey:Id;joinForeignKey:CustomerId1;References:Id;joinReferences:ScreenId1"`
-	ProfileEntity1 ProfileEntity   `gorm:"foreignKey:CustomerId1;references:Id"`
+	ProfileEntity1 *ProfileEntity  `gorm:"foreignKey:CustomerId1;references:Id"`
 }
 
 type ProfileEntity struct {
@@ -110,14 +112,6 @@ func (customerEntity *CustomerEntity) BeforeCreate(dbContext *gorm.DB) (err erro
 	log.Printf("BeforeCreateHook %s", serializedCustomer)
 	return nil
 }
-func (customerEntity *CustomerEntity) BeforeSave(dbContext *gorm.DB) (err error) {
-	serializedCustomer, err := json.Marshal(customerEntity)
-	if err != nil {
-		return err
-	}
-	log.Printf("BeforeSaveHook %s", serializedCustomer)
-	return nil
-}
 func (customerEntity *CustomerEntity) AfterCreate(dbContext *gorm.DB) (err error) {
 	serializedCustomer, err := json.Marshal(customerEntity)
 	if err != nil {
@@ -126,12 +120,54 @@ func (customerEntity *CustomerEntity) AfterCreate(dbContext *gorm.DB) (err error
 	log.Printf("AfterCreateHook %s", serializedCustomer)
 	return nil
 }
+func (customerEntity *CustomerEntity) BeforeUpdate(dbContext *gorm.DB) (err error) {
+	serializedCustomer, err := json.Marshal(customerEntity)
+	if err != nil {
+		return err
+	}
+	log.Printf("BeforeUpdateHook %s", serializedCustomer)
+	return nil
+}
+func (customerEntity *CustomerEntity) AfterUpdate(dbContext *gorm.DB) (err error) {
+	serializedCustomer, err := json.Marshal(customerEntity)
+	if err != nil {
+		return err
+	}
+	log.Printf("AfterUpdateHook %s", serializedCustomer)
+	return nil
+}
+func (customerEntity *CustomerEntity) BeforeSave(dbContext *gorm.DB) (err error) {
+	serializedCustomer, err := json.Marshal(customerEntity)
+	if err != nil {
+		return err
+	}
+	log.Printf("BeforeSaveHook %s", serializedCustomer)
+	return nil
+}
+
 func (customerEntity *CustomerEntity) AfterSave(dbContext *gorm.DB) (err error) {
 	serializedCustomer, err := json.Marshal(customerEntity)
 	if err != nil {
 		return err
 	}
 	log.Printf("AfterSaveHook %s", serializedCustomer)
+	return nil
+}
+
+func (customerEntity *CustomerEntity) BeforeDelete(dbContext *gorm.DB) (err error) {
+	serializedCustomer, err := json.Marshal(customerEntity)
+	if err != nil {
+		return err
+	}
+	log.Printf("BeforeDeleteHook %s", serializedCustomer)
+	return nil
+}
+func (customerEntity *CustomerEntity) AfterDelete(dbContext *gorm.DB) (err error) {
+	serializedCustomer, err := json.Marshal(customerEntity)
+	if err != nil {
+		return err
+	}
+	log.Printf("AfterDeleteHook %s", serializedCustomer)
 	return nil
 }
 
