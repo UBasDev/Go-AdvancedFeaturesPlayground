@@ -8,6 +8,7 @@ import (
 	"example.com/goproject9/entities"
 	requests "example.com/goproject9/requests/customer"
 	responses "example.com/goproject9/responses/customer"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -110,6 +111,11 @@ func CreateMultipleCustomersWithTransactionManagement(rw http.ResponseWriter, rq
 		transaction1.Rollback()
 		return
 	}
+}
+
+type Type1 struct {
+	Id         uuid.UUID
+	Firstname1 string
 }
 
 func GetAllCustomers(rw http.ResponseWriter, rq *http.Request, dbContext *gorm.DB) {
