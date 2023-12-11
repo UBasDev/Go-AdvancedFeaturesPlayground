@@ -8,6 +8,7 @@ import (
 	product_controllers "example.com/goproject9/controllers/product"
 	role_controllers "example.com/goproject9/controllers/role"
 	screen_controllers "example.com/goproject9/controllers/screen"
+	test_controllers "example.com/goproject9/controllers/test"
 )
 
 func (app *application) routes() http.Handler {
@@ -25,6 +26,7 @@ func (app *application) routes() http.Handler {
 	customer_controllers.AddCustomerControllers(router, app.appName, app.dbContext)
 	screen_controllers.AddScreenControllers(router, app.dbContext)
 	role_controllers.AddRoleControllers(router, app.dbContext)
+	test_controllers.AddTestControllers(router, app.dbContext)
 
 	router.HandleFunc("/", func(rw http.ResponseWriter, rq *http.Request) { //Diğer routelarla eşleşmeyen bütün requestleri kabul eder. Genellikle 404 responseları için kullanılır.
 		if rq.URL.Path != "/" {
